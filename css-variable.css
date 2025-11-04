@@ -1,0 +1,6 @@
+:root {
+  --color-background: linear-gradient(to bottom, #fafafa 45%, #ff9ecd 200%);
+  --color-background-button: #ffa0ce;
+
+  --font-primary: "Poppins", sans-serif;
+}
