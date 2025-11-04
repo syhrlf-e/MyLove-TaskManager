@@ -310,16 +310,15 @@ body {
 
 .task-wrapper {
   position: relative;
-  max-height: 460px; /* kira-kira 2 task-card tinggi */
+  max-height: 460px;
   overflow-y: auto;
-  scrollbar-width: none; /* Firefox */
+  scrollbar-width: none;
 }
 
 .task-wrapper::-webkit-scrollbar {
-  display: none; /* Chrome, Safari */
+  display: none;
 }
 
-/* Fade effect */
 .task-wrapper::before,
 .task-wrapper::after {
   content: "";
@@ -373,18 +372,59 @@ body {
   margin-bottom: 15px;
   box-shadow: 0 4px 20px rgba(255, 182, 217, 0.3);
   position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas:
+    "subject deadline"
+    "name type"
+    "detail detail";
+  gap: 6px 12px;
+  color: #ff69b4;
 }
 
 .task-content {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: start;
-  margin-bottom: 12px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  align-items: stretch;
+  height: 100%;
 }
 
 .task-left {
-  flex: 1;
+  display: grid;
+  grid-template-areas:
+    "subject deadline"
+    "name type"
+    "detail detail";
+  grid-template-columns: 1fr 1fr;
+  gap: 6px 12px;
+  align-items: start;
+  width: 100%;
+}
+
+.task-matpel {
+  grid-area: subject;
+  text-align: left;
+  font-weight: 600;
+}
+.task-deadline {
+  grid-area: deadline;
+  text-align: right;
+}
+.task-name {
+  grid-area: name;
+  text-align: left;
+  font-weight: 500;
+}
+.task-type {
+  grid-area: type;
+  text-align: right;
+  font-style: italic;
+}
+.task-detail {
+  grid-area: detail;
+  text-align: left;
+  font-size: 13px;
 }
 
 .task-info {
@@ -394,21 +434,23 @@ body {
 }
 
 .task-actions {
+  background-color: rgb(255, 255, 255);
+  position: absolute;
+  bottom: -10px;
+  right: 10px;
   display: flex;
   gap: 8px;
+  /* margin: 10px; */
 }
 
 .action-btn {
-  width: 32px;
-  height: 32px;
+  background: var(--accent);
+  color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
+  padding: 6px 10px;
   cursor: pointer;
-  font-size: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.2s ease;
+  transition: 0.2s;
 }
 
 .action-btn:hover:not(:disabled) {
@@ -429,7 +471,7 @@ body {
 }
 
 .btn-edit {
-  background: #fff59d;
+  background: #b4a72e;
 }
 
 .btn-back {
@@ -464,5 +506,29 @@ body {
 @media (min-width: 768px) {
   .container {
     max-width: 480px;
+  }
+}
+
+@media (max-width: 500px) {
+  .task-content {
+    grid-template-columns: 1fr auto;
+    gap: 10px;
+  }
+
+  .task-left {
+    grid-template-columns: 1fr auto;
+    gap: 4px 8px;
+  }
+
+  .task-actions {
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: flex-end;
+    margin-top: 10px;
+  }
+
+  .action-btn {
+    padding: 5px 8px;
+    font-size: 0.85rem;
   }
 }

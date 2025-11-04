@@ -93,6 +93,15 @@ async function startApp() {
   }, 3000);
 }
 
+document.addEventListener("DOMContentLoaded", () => {
+  new TomSelect("#subject2", {
+    create: false,
+    sortField: { field: "text", direction: "asc" },
+    placeholder: "Pilih mata pelajarannya yaa",
+    maxOptions: 14,
+  });
+});
+
 async function handleFormSubmit(formId, submitBtnId) {
   const form = document.getElementById(formId);
   form.addEventListener("submit", async function (e) {
@@ -180,22 +189,59 @@ function renderTasks() {
   tasks.forEach((task) => {
     const taskCard = document.createElement("div");
     taskCard.className = "task-card";
+    // taskCard.innerHTML = `
+    //                 <div class="task-content">
+    //                     <div class="task-left">
+    //                         <h2 class="task-info"> ${task.subject} </h2>
+    //                         <div class="task-info"> ${task.deadline} </div>
+    //                         <div class="task-info"> ${task.name} </div>
+    //                         <div class="task-info"> ${task.type} </div>
+    //                         <div class="task-info"> ${task.detail} </div>
+    //                     </div>
+    //                     <div class="task-actions">
+    //                         <button class="action-btn btn-complete" onclick="completeTask('${task.id}')"><i class="fa-solid fa-check"></i></button>
+    //                         <button class="action-btn btn-delete" onclick="deleteTask('${task.id}')"><i class="fa-solid fa-xmark"></i></button>
+    //                         <button class="action-btn btn-edit" onclick="editTask('${task.id}')"><i class="fa-solid fa-pen"></i></button>
+    //                     </div>
+    //                 </div>
+    //             `;
+
+    //     taskCard.innerHTML = `
+    //   <div class="task-content">
+    //     <div class="task-left">
+    //       <h2 class="task-info matpel">${task.subject}</h2>
+    //       <div class="task-info task-deadline">Deadline : ${task.deadline}</div>
+    //       <div class="task-info task-name">${task.name}</div>
+    //       <div class="task-info task-type">${task.type}</div>
+    //       <div class="task-info task-detail">${task.detail}</div>
+    //     </div>
+    //     <div class="task-actions">
+    //       <button class="action-btn btn-complete" onclick="completeTask('${task.id}')"><i class="fa-solid fa-check"></i></button>
+    //       <button class="action-btn btn-delete" onclick="deleteTask('${task.id}')"><i class="fa-solid fa-xmark"></i></button>
+    //       <button class="action-btn btn-edit" onclick="editTask('${task.id}')"><i class="fa-solid fa-pen"></i></button>
+    //     </div>
+    //   </div>
+    // `;
+
     taskCard.innerHTML = `
-                    <div class="task-content">
-                        <div class="task-left">
-                            <h2 class="task-info"> ${task.subject} </h2>
-                            <div class="task-info"> ${task.deadline} </div>
-                            <div class="task-info"> ${task.name} </div>
-                            <div class="task-info"> ${task.type} </div>
-                            <div class="task-info"> ${task.detail} </div>
-                        </div>
-                        <div class="task-actions">
-                            <button class="action-btn btn-complete" onclick="completeTask('${task.id}')">✓</button>
-                            <button class="action-btn btn-delete" onclick="deleteTask('${task.id}')">✕</button>
-                            <button class="action-btn btn-edit" onclick="editTask('${task.id}')">✎</button>
-                        </div>
-                    </div>
-                `;
+  <div class="task-matpel task-info">${task.subject}</div>
+  <div class="task-deadline task-info">${task.deadline}</div>
+  <div class="task-name task-info">${task.name}</div>
+  <div class="task-type task-info">${task.type}</div>
+  <div class="task-detail task-info">${task.detail}</div>
+  <div class="task-actions">
+    <button class="action-btn btn-complete" onclick="completeTask('${task.id}')">
+      <i class="fa-solid fa-check"></i>
+    </button>
+    <button class="action-btn btn-edit" onclick="editTask('${task.id}')">
+      <i class="fa-solid fa-pen"></i>
+    </button>
+    <button class="action-btn btn-delete" onclick="deleteTask('${task.id}')">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+  </div>
+`;
+
     container.appendChild(taskCard);
   });
 }
