@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sayaang - Task Manager</title>
+    <title>MyLove-TaskManager</title>
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="css-variable.css" />
     <link rel="stylesheet" href="responsive.css" />
@@ -14,267 +14,214 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.26.3/dist/sweetalert2.min.css
       rel="stylesheet"
     />
     <link
-      href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.css"
-      rel="stylesheet"
-    />
-    <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
       integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
-
-    <script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js"></script>
   </head>
   <body>
     <div class="loading-overlay" id="loadingOverlay">
       <div class="spinner"></div>
     </div>
 
-    <div class="container">
-      <div id="splash" class="screen active">
-        <div class="splash-screen">
-          <h1 class="gradient-text">Hallaaw Sayaang....</h1>
-        </div>
-      </div>
-
-      <div id="question" class="screen">
-        <div class="question-screen">
-          <h2 class="gradient-text">Sayaang</h2>
-          <h1 class="gradient-text">KAMU MAU APA NI ?</h1>
-          <div class="button-group">
-            <button class="btn" onclick="showAddTask()">Pengingat Tugas</button>
-            <button class="btn" onclick="showTaskList()">
-              Mau Lihat Tugas
-            </button>
+    <div id="mainContent">
+      <div class="container">
+        <div id="splash" class="screen active">
+          <div class="splash-screen">
+            <h1 class="gradient-text">Hallaaw Sayaang....</h1>
           </div>
-          <p>
-            Sayang, kamu bisa langsung pilih aja ya sesuai dengan kebutuhan
-            kamu, kamu mau nya apa ni? bisa langsung klik aja ya cantik
-          </p>
         </div>
-      </div>
 
-      <div id="addTaskEmpty" class="screen">
-        <div class="form-screen">
-          <h2 class="gradient-text">Sayaang....</h2>
-          <h1 class="gradient-text">KAMU ADA TUGAS?</h1>
-          <p class="subtitle">Catet disini yaaww</p>
+        <div id="question" class="screen">
+          <div class="question-screen">
+            <h2 class="gradient-text">Sayaang</h2>
+            <h1 class="gradient-text">KAMU MAU APA NI ?</h1>
+            <div class="button-group">
+              <button class="btn" onclick="showAddTask()">
+                Pengingat Tugas
+              </button>
+              <button class="btn" onclick="showTaskList()">
+                Mau Lihat Tugas
+              </button>
+            </div>
+            <p>
+              Sayang, kamu bisa langsung pilih aja ya sesuai dengan kebutuhan
+              kamu, kamu mau nya apa ni? bisa langsung klik aja ya cantik
+            </p>
+          </div>
+        </div>
 
-          <div class="form-card">
-            <form id="taskForm">
-              <div class="form-group">
-                <label>Nama Tugas</label>
-                <input
-                  type="text"
-                  id="taskName"
-                  placeholder="Masukan nama tugas kamu yaa"
-                  required
-                />
-              </div>
+        <div id="addTaskEmpty" class="screen">
+          <div class="form-screen">
+            <h2 class="gradient-text">Sayaang....</h2>
+            <h1 class="gradient-text">KAMU ADA TUGAS?</h1>
+            <p class="subtitle">Catet disini yaaww</p>
 
-              <div class="form-group">
-                <label>Detail Tugas</label>
-                <input
-                  type="text"
-                  id="taskDetail"
-                  placeholder="Tugasnya disuruh apa niii sayaang??"
-                  required
-                />
-              </div>
+            <div class="status-card">
+              <h2>Yeeeaayyyy</h2>
+              <h1>Kamu tida ada tugass</h1>
+            </div>
 
-              <div class="form-group">
-                <label>Mata Pelajaran</label>
-                <select id="subject" required>
-                  <option value="">Pilih mata pelajarannya yaa</option>
-                  <option value="Administrasi Umum">Administrasi Umum</option>
-                  <option value="Bahasa Inggris">Bahasa Inggris</option>
-                  <option value="Bahasa Indonesia">Bahasa Indonesia</option>
-                  <option value="Ekonomi Bisnis">Ekonomi Bisnis</option>
-                  <option value="Kearsipan">Kearsipan</option>
-                  <option value="Mapel Pilihan MP">Mapel Pilihan MP</option>
-                  <option value="Matematika">Matematika</option>
-                  <option value="Pendidikan Agama Islam">
-                    Pendidikan Agama Islam
-                  </option>
-                  <option value="Pendidikan Pancasila">
-                    Pendidikan Pancasila
-                  </option>
-                  <option value="Pengelolaan Rapat">Pengelolaan Rapat</option>
-                  <option value="Pendidikan Jasmani">Pendidikan Jasmani</option>
-                  <option value="Produk Kreatif dan Kewirausahaan">
-                    Produk Kreatif dan Kewirausahaan
-                  </option>
-                </select>
-              </div>
+            <p class="footer-text">
+              Dibuat dengan penuh kasih sayang aku ke kamu, <br />from syahrul
+              to Hilda
+            </p>
+          </div>
+        </div>
 
-              <div class="form-group">
-                <label>Masukan Deadline</label>
-                <input type="date" id="deadline" required />
-              </div>
+        <div id="addTaskHas" class="screen">
+          <div class="form-screen">
+            <h2>Sayaang....</h2>
+            <h1>KAMU ADA TUGAS?</h1>
+            <p class="subtitle">Catet disini yaaww</p>
 
-              <div class="form-group">
-                <label>Jenis Tugas</label>
-                <div class="radio-group">
-                  <div class="radio-option">
-                    <input
-                      type="radio"
-                      id="individual"
-                      name="taskType"
-                      value="Individu"
-                      required
-                    />
-                    <label for="individual">Individu</label>
-                  </div>
-                  <div class="radio-option">
-                    <input
-                      type="radio"
-                      id="group"
-                      name="taskType"
-                      value="Kelompok"
-                    />
-                    <label for="group">Kelompok</label>
+            <div class="form-card">
+              <form id="taskForm2">
+                <div class="form-group">
+                  <label>Nama Tugas</label>
+                  <input
+                    type="text"
+                    id="taskName2"
+                    placeholder="Masukan nama tugas kamu yaa"
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label>Detail Tugas</label>
+                  <input
+                    type="text"
+                    id="taskDetail2"
+                    placeholder="Tugasnya disuruh apa niii sayaang??"
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label>Mata Pelajaran</label>
+                  <input
+                    type="text"
+                    id="subjectFake"
+                    placeholder="Klik untuk pilih"
+                    readonly
+                  />
+                  <select id="subject" style="display: none">
+                    <option></option>
+                    <option value="Administrasi umum">Administrasi Umum</option>
+                    <option value="Bahasa Inggris">Bahasa Inggris</option>
+                    <option value="Bahasa Indonesia">Bahasa Indonesia</option>
+                    <option value="Ekonomi bisnis">Ekonomi Bisnis</option>
+                    <option value="Kearsipan">Kearsipan</option>
+                    <option value="Mapel Pilihan MP">Mapel Pilihan MP</option>
+                    <option value="Matematika">Matematika</option>
+                    <option value="Pend. Agama Islam">
+                      Pendidikan Agama Islam
+                    </option>
+                    <option value="Pend. Pancasila">
+                      Pendidikan Pancasila
+                    </option>
+                    <option value="PKK">
+                      Projek Kreatif dan Kewirausahaan
+                    </option>
+                    <option value="Pengelolaan rapat">Pengelolaan Rapat</option>
+                    <option value="Penjas">Pendidikan Jasmani</option>
+                    <option value="Sejarah">Sejarah</option>
+                    <option value="Teknologi kantor">Teknologi kantor</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label>Masukan Deadline</label>
+                  <input type="date" id="deadline2" />
+                </div>
+
+                <div class="form-group">
+                  <label>Jenis Tugas</label>
+                  <div class="radio-group">
+                    <div class="radio-option">
+                      <input
+                        type="radio"
+                        id="individual2"
+                        name="taskType2"
+                        value="Individu"
+                      />
+                      <label for="individual2">Individu</label>
+                    </div>
+                    <div class="radio-option">
+                      <input
+                        type="radio"
+                        id="group2"
+                        name="taskType2"
+                        value="Kelompok"
+                      />
+                      <label for="group2">Kelompok</label>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <button type="submit" class="btn-primary" id="submitBtn">
-                Bikin Catatan
+                <button type="submit" class="btn-primary" id="submitBtn2">
+                  Bikin Catatan
+                </button>
+              </form>
+            </div>
+
+            <div class="status-card">
+              <h2>Sayaaang....</h2>
+              <h1>Kamu ada tugas nii...</h1>
+              <button class="btn-primary" onclick="showTaskList()">
+                Lihat Tugas
               </button>
-            </form>
-          </div>
+            </div>
 
-          <div class="status-card">
-            <h2>Yeeeaayyyy</h2>
-            <h1>Kamu tida ada tugass</h1>
+            <p class="footer-text">
+              Dibuat dengan penuh kasih sayang aku ke kamu, <br />from syahrul
+              to Hilda
+            </p>
           </div>
-
-          <p class="footer-text">
-            Dibuat dengan penuh kasih sayang aku ke kamu, <br />from syahrul to
-            Hilda
-          </p>
         </div>
-      </div>
 
-      <div id="addTaskHas" class="screen">
-        <div class="form-screen">
-          <h2>Sayaang....</h2>
-          <h1>KAMU ADA TUGAS?</h1>
-          <p class="subtitle">Catet disini yaaww</p>
+        <div id="taskList" class="screen">
+          <div class="task-list-screen">
+            <h2 class="gradient-text">Sayaaang...</h2>
+            <h1 class="gradient-text">INI TUGAS - TUGAS KAMU YAA</h1>
+            <p class="subtitle">Semangat sayaang</p>
 
-          <div class="form-card">
-            <form id="taskForm2">
-              <div class="form-group">
-                <label>Nama Tugas</label>
-                <input
-                  type="text"
-                  id="taskName2"
-                  placeholder="Masukan nama tugas kamu yaa"
-                />
-              </div>
+            <div class="task-wrapper">
+              <div id="taskContainer"></div>
+            </div>
 
-              <div class="form-group">
-                <label>Detail Tugas</label>
-                <input
-                  type="text"
-                  id="taskDetail2"
-                  placeholder="Tugasnya dieuruh apa niii sayaang??"
-                />
-              </div>
+            <button class="btn-back" onclick="showQuestion()">Kembali</button>
 
-              <div class="form-group">
-                <label>Mata Pelajaran</label>
-                <select id="subject2">
-                  <option value="">Pilih mata pelajarannya yaa</option>
-                  <option value="Administrasi umum">Administrasi Umum</option>
-                  <option value="Bahasa Inggris">Bahasa Inggris</option>
-                  <option value="Bahasa Indonesia">Bahasa Indonesia</option>
-                  <option value="Ekonomi bisnis">Ekonomi Bisnis</option>
-                  <option value="Kearsipan">Kearsipan</option>
-                  <option value="Mapel Pilihan MP">Mapel Pilihan MP</option>
-                  <option value="Matematika">Matematika</option>
-                  <option value="Pend. Agama Islam">
-                    Pendidikan Agama Islam
-                  </option>
-                  <option value="Pend. Pancasila">Pendidikan Pancasila</option>
-                  <option value="PKK">Projek Kreatif dan Kewirausahaan</option>
-                  <option value="Pengelolaan rapat">Pengelolaan Rapat</option>
-                  <option value="Penjas">Pendidikan Jasmani</option>
-                  <option value="Sejarah">Sejarah</option>
-                  <option value="Teknologi kantor">Teknologi kantor</option>
-                </select>
-              </div>
-
-              <div class="form-group">
-                <label>Masukan Deadline</label>
-                <input type="date" id="deadline2" />
-              </div>
-
-              <div class="form-group">
-                <label>Jenis Tugas</label>
-                <div class="radio-group">
-                  <div class="radio-option">
-                    <input
-                      type="radio"
-                      id="individual2"
-                      name="taskType2"
-                      value="Individu"
-                    />
-                    <label for="individual2">Individu</label>
-                  </div>
-                  <div class="radio-option">
-                    <input
-                      type="radio"
-                      id="group2"
-                      name="taskType2"
-                      value="Kelompok"
-                    />
-                    <label for="group2">Kelompok</label>
-                  </div>
-                </div>
-              </div>
-
-              <button type="submit" class="btn-primary" id="submitBtn2">
-                Bikin Catatan
-              </button>
-            </form>
+            <p class="footer-text">
+              Dibuat dengan penuh kasih sayang aku ke kamu, <br />from syahrul
+              to Hilda
+            </p>
           </div>
-
-          <div class="status-card">
-            <h2>Sayaaang....</h2>
-            <h1>Kamu ada tugas nii...</h1>
-            <button class="btn-primary" onclick="showTaskList()">
-              Lihat Tugas
-            </button>
-          </div>
-
-          <p class="footer-text">
-            Dibuat dengan penuh kasih sayang aku ke kamu, <br />from syahrul to
-            Hilda
-          </p>
-        </div>
-      </div>
-
-      <div id="taskList" class="screen">
-        <div class="task-list-screen">
-          <h2 class="gradient-text">Sayaaang...</h2>
-          <h1 class="gradient-text">INI TUGAS - TUGAS KAMU YAA</h1>
-          <p class="subtitle">Semangat sayaang</p>
-
-          <div class="task-wrapper">
-            <div id="taskContainer"></div>
-          </div>
-
-          <button class="btn-back" onclick="showQuestion()">Kembali</button>
-
-          <p class="footer-text">
-            Dibuat dengan penuh kasih sayang aku ke kamu, <br />from syahrul to
-            Hilda
-          </p>
         </div>
       </div>
     </div>
+    <div class="dropdown-popup" id="dropdownPopup">
+      <ul id="dropdownOptions">
+        <li data-value="Administrasi Umum">Administrasi Umum</li>
+        <li data-value="Bahasa Inggris">Bahasa Inggris</li>
+        <li data-value="Bahasa Indonesia">Bahasa Indonesia</li>
+        <li data-value="Ekonomi Bisnis">Ekonomi Bisnis</li>
+        <li data-value="Kearsipan">Kearsipan</li>
+        <li data-value="Mapel Pilihan MP">Mapel Pilihan MP</li>
+        <li data-value="Matematika">Matematika</li>
+        <li data-value="Pendidikan Agama Islam">Pendidikan Agama Islam</li>
+        <li data-value="Pendidikan Pancasila">Pendidikan Pancasila</li>
+        <li data-value="Projek Kreatif dan Kewirausahaan">
+          Projek Kreatif dan Kewirausahaan
+        </li>
+        <li data-value="Pengelolaan Rapat">Pengelolaan Rapat</li>
+        <li data-value="Pendidikan Jasmani">Pendidikan Jasmani</li>
+        <li data-value="Sejarah">Sejarah</li>
+        <li data-value="Teknologi Kantor">Teknologi Kantor</li>
+      </ul>
+    </div>
+    <div class="overlay" id="overlay"></div>
+
     <script src="
 https://cdn.jsdelivr.net/npm/sweetalert2@11.26.3/dist/sweetalert2.all.min.js
 "></script>

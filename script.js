@@ -39,7 +39,6 @@ function hideLoading() {
   document.getElementById("loadingOverlay").classList.remove("active");
 }
 
-// Screen navigation
 window.showScreen = function (screenId) {
   document.querySelectorAll(".screen").forEach((screen) => {
     screen.classList.remove("active");
@@ -63,11 +62,9 @@ window.showTaskList = function () {
   showScreen("taskList");
 };
 
-// Initialize - Load tasks from Firestore
 async function startApp() {
   showLoading();
 
-  // Real-time listener for tasks
   const q = query(collection(db, "tasks"), orderBy("createdAt", "desc"));
   unsubscribe = onSnapshot(
     q,
@@ -92,19 +89,33 @@ async function startApp() {
     showScreen("question");
   }, 3000);
 }
-
 document.addEventListener("DOMContentLoaded", () => {
-  new TomSelect("#subject2", {
-    create: false,
-    maxItems: 1,
-    persist: false,
-    allowEmptyOption: false,
-    closeAfterSelect: true,
-    selectOnTab: true,
-    searchField: ["text"],
-    sortField: { field: "text", direction: "asc" },
-    placeholder: "Pilih mata pelajarannya yaa",
-    maxOptions: 14,
+  const subjectFake = document.getElementById("subjectFake");
+  const subjectSelect = document.getElementById("subject");
+  const dropdownPopup = document.getElementById("dropdownPopup");
+  const overlay = document.getElementById("overlay");
+  const mainContent = document.getElementById("mainContent");
+
+  subjectFake.addEventListener("click", () => {
+    dropdownPopup.style.display = "block";
+    overlay.style.display = "block";
+    mainContent.classList.add("blur-bg");
+  });
+
+  overlay.addEventListener("click", () => {
+    dropdownPopup.style.display = "none";
+    overlay.style.display = "none";
+    mainContent.classList.remove("blur-bg");
+  });
+
+  document.querySelectorAll("#dropdownOptions li").forEach((item) => {
+    item.addEventListener("click", () => {
+      subjectFake.value = item.dataset.value;
+      subjectSelect.value = item.dataset.value;
+      dropdownPopup.style.display = "none";
+      overlay.style.display = "none";
+      mainContent.classList.remove("blur-bg");
+    });
   });
 });
 
@@ -131,7 +142,7 @@ async function handleFormSubmit(formId, submitBtnId) {
     }
 
     submitBtn.disabled = true;
-    submitBtn.textContent = "Menyimpan...";
+    submitBtn.textContent = "Disimpan dulu yaa sayaangg";
 
     try {
       const task = {
@@ -195,40 +206,6 @@ function renderTasks() {
   tasks.forEach((task) => {
     const taskCard = document.createElement("div");
     taskCard.className = "task-card";
-    // taskCard.innerHTML = `
-    //                 <div class="task-content">
-    //                     <div class="task-left">
-    //                         <h2 class="task-info"> ${task.subject} </h2>
-    //                         <div class="task-info"> ${task.deadline} </div>
-    //                         <div class="task-info"> ${task.name} </div>
-    //                         <div class="task-info"> ${task.type} </div>
-    //                         <div class="task-info"> ${task.detail} </div>
-    //                     </div>
-    //                     <div class="task-actions">
-    //                         <button class="action-btn btn-complete" onclick="completeTask('${task.id}')"><i class="fa-solid fa-check"></i></button>
-    //                         <button class="action-btn btn-delete" onclick="deleteTask('${task.id}')"><i class="fa-solid fa-xmark"></i></button>
-    //                         <button class="action-btn btn-edit" onclick="editTask('${task.id}')"><i class="fa-solid fa-pen"></i></button>
-    //                     </div>
-    //                 </div>
-    //             `;
-
-    //     taskCard.innerHTML = `
-    //   <div class="task-content">
-    //     <div class="task-left">
-    //       <h2 class="task-info matpel">${task.subject}</h2>
-    //       <div class="task-info task-deadline">Deadline : ${task.deadline}</div>
-    //       <div class="task-info task-name">${task.name}</div>
-    //       <div class="task-info task-type">${task.type}</div>
-    //       <div class="task-info task-detail">${task.detail}</div>
-    //     </div>
-    //     <div class="task-actions">
-    //       <button class="action-btn btn-complete" onclick="completeTask('${task.id}')"><i class="fa-solid fa-check"></i></button>
-    //       <button class="action-btn btn-delete" onclick="deleteTask('${task.id}')"><i class="fa-solid fa-xmark"></i></button>
-    //       <button class="action-btn btn-edit" onclick="editTask('${task.id}')"><i class="fa-solid fa-pen"></i></button>
-    //     </div>
-    //   </div>
-    // `;
-
     taskCard.innerHTML = `
   <div class="task-matpel task-info">${task.subject}</div>
   <div class="task-deadline task-info">${task.deadline}</div>
@@ -283,11 +260,11 @@ window.completeTask = async function (id) {
 window.deleteTask = async function (id) {
   const result = await Swal.fire({
     title: "Hapus tugas?",
-    text: "Yakin mau hapus tugas ini sayang? 😢",
+    text: "Yakin mau hapus tugas ini sayang?",
     icon: "warning",
     showCancelButton: true,
-    confirmButtonText: "Iya, hapus!",
-    cancelButtonText: "Batal",
+    confirmButtonText: "Iyaa Sayaang",
+    cancelButtonText: "Gajadii ahh",
   });
 
   if (!result.isConfirmed) return;
@@ -295,10 +272,10 @@ window.deleteTask = async function (id) {
   showLoading();
   try {
     await deleteDoc(doc(db, "tasks", id));
-    Swal.fire("Terhapus!", "Tugas berhasil dihapus 💔", "success");
+    Swal.fire("Terhapus!", "Tugas berhasil dihapus", "success");
   } catch (error) {
     console.error("Error deleting task:", error);
-    Swal.fire("Gagal!", "Gagal menghapus tugas. Coba lagi 😢", "error");
+    Swal.fire("Gagal!", "Gagal menghapus tugas. Coba lagi", "error");
   } finally {
     hideLoading();
   }
