@@ -96,6 +96,12 @@ async function startApp() {
 document.addEventListener("DOMContentLoaded", () => {
   new TomSelect("#subject2", {
     create: false,
+    maxItems: 1,
+    persist: false,
+    allowEmptyOption: false,
+    closeAfterSelect: true,
+    selectOnTab: true,
+    searchField: ["text"],
     sortField: { field: "text", direction: "asc" },
     placeholder: "Pilih mata pelajarannya yaa",
     maxOptions: 14,
