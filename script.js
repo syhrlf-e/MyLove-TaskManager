@@ -119,6 +119,72 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
+// async function handleFormSubmit(formId, submitBtnId) {
+//   const form = document.getElementById(formId);
+//   form.addEventListener("submit", async function (e) {
+//     e.preventDefault();
+
+//     const submitBtn = document.getElementById(submitBtnId);
+
+//     const inputs = form.querySelectorAll("input[required], select[required]");
+//     let valid = true;
+//     inputs.forEach((input) => {
+//       if (!input.value) valid = false;
+//     });
+
+//     if (!valid) {
+//       Swal.fire({
+//         icon: "warning",
+//         title: "Upss...",
+//         text: "Sayang, semua field harus diisi dulu yaaa",
+//       });
+//       return;
+//     }
+
+//     submitBtn.disabled = true;
+//     submitBtn.textContent = "Disimpan dulu yaa sayaangg";
+
+//     try {
+//       const task = {
+//         name: form.querySelector('input[id^="taskName"]').value,
+//         detail: form.querySelector('input[id^="taskDetail"]').value,
+//         subject: form.querySelector('input[id^="subjectFake"]').value,
+//         deadline: form.querySelector('input[type="date"]').value,
+//         type: form.querySelector('input[type="radio"]:checked').value,
+//         createdAt: serverTimestamp(),
+//       };
+
+//       if (editingTaskId && formId === "taskForm") {
+//         await updateDoc(doc(db, "tasks", editingTaskId), task);
+//         editingTaskId = null;
+//       } else {
+//         await addDoc(collection(db, "tasks"), task);
+//       }
+//       x;
+//       form.reset();
+
+//       Swal.fire({
+//         icon: "success",
+//         title: "Berhasil!",
+//         text: "Tugas berhasil disimpan sayaang",
+//         timer: 1500,
+//         showConfirmButton: false,
+//       });
+
+//       showTaskList();
+//     } catch (error) {
+//       console.error("Error saving task:", error);
+//       Swal.fire({
+//         icon: "error",
+//         title: "Gagal!",
+//         text: "Gagal menyimpan tugas. Cobaa lagii yaa sayang",
+//       });
+//     } finally {
+//       submitBtn.disabled = false;
+//       submitBtn.textContent = "Bikin Catatan";
+//     }
+//   });
+// }
 async function handleFormSubmit(formId, submitBtnId) {
   const form = document.getElementById(formId);
   form.addEventListener("submit", async function (e) {
@@ -126,13 +192,25 @@ async function handleFormSubmit(formId, submitBtnId) {
 
     const submitBtn = document.getElementById(submitBtnId);
 
-    const inputs = form.querySelectorAll("input[required], select[required]");
-    let valid = true;
-    inputs.forEach((input) => {
-      if (!input.value) valid = false;
-    });
+    // Ambil semua value
+    const taskName = form.querySelector('input[id^="taskName"]').value.trim();
+    const taskDetail = form
+      .querySelector('input[id^="taskDetail"]')
+      .value.trim();
+    const taskSubject = form
+      .querySelector('input[id^="subjectFake"]')
+      .value.trim();
+    const taskDeadline = form.querySelector('input[type="date"]').value;
+    const taskType = form.querySelector('input[type="radio"]:checked')?.value;
 
-    if (!valid) {
+    // Validasi semua field
+    if (
+      !taskName ||
+      !taskDetail ||
+      !taskSubject ||
+      !taskDeadline ||
+      !taskType
+    ) {
       Swal.fire({
         icon: "warning",
         title: "Upss...",
@@ -146,11 +224,11 @@ async function handleFormSubmit(formId, submitBtnId) {
 
     try {
       const task = {
-        name: form.querySelector('input[id^="taskName"]').value,
-        detail: form.querySelector('input[id^="taskDetail"]').value,
-        subject: form.querySelector('select[id^="subject"]').value,
-        deadline: form.querySelector('input[type="date"]').value,
-        type: form.querySelector('input[type="radio"]:checked').value,
+        name: taskName,
+        detail: taskDetail,
+        subject: taskSubject,
+        deadline: taskDeadline,
+        type: taskType,
         createdAt: serverTimestamp(),
       };
 
