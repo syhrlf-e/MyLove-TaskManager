@@ -192,10 +192,9 @@ document.addEventListener("DOMContentLoaded", () => {
             year: "numeric",
           });
 
-          // Update deadline2 dan hidden deadline
-          const isoDate = selected.toISOString().split("T")[0];
-          deadline2.value = isoDate;
-          hiddenDeadline.value = isoDate;
+          const localISO = formatDateToLocalISO(selected);
+          deadline2.value = localISO;
+          hiddenDeadline.value = localISO;
 
           calendarPopup.style.display = "none";
           overlayDate.style.display = "none";
