@@ -131,6 +131,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let currentDate = new Date();
 
+  function formatDateToLocalISO(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  }
+
   function renderCalendar(date) {
     calendarGrid.innerHTML = "";
 
@@ -176,9 +183,9 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         // Update deadline2 dan hidden deadline
-        const isoDate = selected.toISOString().split("T")[0];
-        deadline2.value = isoDate;
-        hiddenDeadline.value = isoDate;
+        const localISO = formatDateToLocalISO(selected);
+        deadline2.value = localISO;
+        hiddenDeadline.value = localISO;
 
         calendarPopup.style.display = "none";
         overlayDate.style.display = "none";
@@ -311,7 +318,7 @@ function formatDateDisplay(isoDate) {
   const date = new Date(isoDate);
   const dayName = date.toLocaleDateString("id-ID", { weekday: "short" });
   const day = date.getDate();
-  const monthName = date.toLocaleDateString("id-ID", { month: "long" });
+  const monthName = date.toLocaleDateString("id-ID", { month: "short" });
   const year = date.getFullYear();
 
   return `${dayName}, ${day} ${monthName} ${year}`;
@@ -319,6 +326,7 @@ function formatDateDisplay(isoDate) {
 
 function renderTasks() {
   const container = document.getElementById("taskContainer");
+  const addTaskEmpty = document.getElementById("addTaskEmpty");
   container.innerHTML = "";
 
   if (tasks.length === 0) {
@@ -331,8 +339,15 @@ function renderTasks() {
     return;
   }
 
+  tasks.sort((a, b) => {
+    if (!a.deadline) return 1;
+    if (!b.deadline) return -1;
+    return new Date(a.deadline) - new Date(b.deadline);
+  });
+
   tasks.forEach((task) => {
     const taskCard = document.createElement("div");
+
     taskCard.className = "task-card";
     taskCard.innerHTML = `
       <div class="task-matpel task-info">${task.subject}</div>

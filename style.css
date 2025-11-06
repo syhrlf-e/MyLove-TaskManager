@@ -1,5 +1,23 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
+body,
+div,
+span,
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+input,
+textarea {
+  user-select: none; /* Nonaktifkan seleksi teks */
+  -webkit-user-select: none; /* Chrome/Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE/Edge */
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -201,6 +219,11 @@ body {
   -moz-border-radius: 15px;
   -ms-border-radius: 15px;
   -o-border-radius: 15px;
+}
+
+#subjectFake,
+#fakeDateInput {
+  cursor: pointer;
 }
 
 .form-group input:focus,
@@ -564,7 +587,6 @@ body {
 }
 
 .task-actions {
-  background-color: rgb(255, 255, 255);
   position: absolute;
   bottom: -10px;
   right: 10px;
