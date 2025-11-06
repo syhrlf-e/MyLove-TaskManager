@@ -184,11 +184,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
           const selected = new Date(year, month, i);
 
-          // Update fakeDateInput untuk display
           fakeDateInput.value = selected.toLocaleDateString("id-ID", {
             weekday: "long",
             day: "2-digit",
-            month: "short",
+            month: "long",
             year: "numeric",
           });
 
