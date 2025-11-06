@@ -349,9 +349,9 @@ function renderTasks() {
   }
 
   tasks.sort((a, b) => {
-    if (!a.deadline) return 1;
-    if (!b.deadline) return -1;
-    return new Date(a.deadline) - new Date(b.deadline);
+    if (!a.createdAt) return 1;
+    if (!b.createdAt) return -1;
+    return b.createdAt.seconds - a.createdAt.seconds;
   });
 
   tasks.forEach((task) => {
