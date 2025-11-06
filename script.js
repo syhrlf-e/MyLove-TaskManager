@@ -3,7 +3,6 @@ import {
   getFirestore,
   collection,
   addDoc,
-  getDocs,
   doc,
   updateDoc,
   deleteDoc,
@@ -30,7 +29,6 @@ let tasks = [];
 let editingTaskId = null;
 let unsubscribe = null;
 
-// Loading overlay
 function showLoading() {
   document.getElementById("loadingOverlay").classList.add("active");
 }
@@ -50,16 +48,18 @@ window.showQuestion = function () {
   showScreen("question");
 };
 
+// ✅ Update: Selalu tampilkan addTaskHas
 window.showAddTask = function () {
-  if (tasks.length === 0) {
-    showScreen("addTaskEmpty");
-  } else {
-    showScreen("addTaskHas");
+  // Reset form jika bukan edit mode
+  if (!editingTaskId) {
+    document.getElementById("taskForm2").reset();
   }
+  showScreen("addTaskHas");
 };
 
 window.showTaskList = function () {
   showScreen("taskList");
+  renderTasks();
 };
 
 async function startApp() {
@@ -80,33 +80,34 @@ async function startApp() {
     }
   );
 
-  window.showTaskList = function () {
-    showScreen("taskList");
-    renderTasks();
-  };
-
   setTimeout(() => {
     showScreen("question");
   }, 3000);
 }
+
 document.addEventListener("DOMContentLoaded", () => {
+  // ===== Dropdown Mata Pelajaran =====
   const subjectFake = document.getElementById("subjectFake");
   const subjectSelect = document.getElementById("subject");
   const dropdownPopup = document.getElementById("dropdownPopup");
   const overlay = document.getElementById("overlay");
   const mainContent = document.getElementById("mainContent");
 
-  subjectFake.addEventListener("click", () => {
-    dropdownPopup.style.display = "block";
-    overlay.style.display = "block";
-    mainContent.classList.add("blur-bg");
-  });
+  if (subjectFake) {
+    subjectFake.addEventListener("click", () => {
+      dropdownPopup.style.display = "block";
+      overlay.style.display = "block";
+      mainContent.classList.add("blur-bg");
+    });
+  }
 
-  overlay.addEventListener("click", () => {
-    dropdownPopup.style.display = "none";
-    overlay.style.display = "none";
-    mainContent.classList.remove("blur-bg");
-  });
+  if (overlay) {
+    overlay.addEventListener("click", () => {
+      dropdownPopup.style.display = "none";
+      overlay.style.display = "none";
+      mainContent.classList.remove("blur-bg");
+    });
+  }
 
   document.querySelectorAll("#dropdownOptions li").forEach((item) => {
     item.addEventListener("click", () => {
@@ -117,25 +118,133 @@ document.addEventListener("DOMContentLoaded", () => {
       mainContent.classList.remove("blur-bg");
     });
   });
+
+  // ===== Popup Kalender =====
+  // ✅ Update: Pakai fakeDateInput dan deadline2
+  const fakeDateInput = document.getElementById("fakeDateInput");
+  const deadline2 = document.getElementById("deadline2");
+  const hiddenDeadline = document.getElementById("deadline");
+  const calendarPopup = document.getElementById("calendarPopup");
+  const calendarGrid = document.getElementById("calendarGrid");
+  const monthYear = document.getElementById("monthYear");
+  const prevMonth = document.getElementById("prevMonth");
+  const nextMonth = document.getElementById("nextMonth");
+  const overlayDate = document.getElementById("overlayDate");
+
+  let currentDate = new Date();
+
+  function renderCalendar(date) {
+    calendarGrid.innerHTML = "";
+
+    const year = date.getFullYear();
+    const month = date.getMonth();
+
+    monthYear.textContent = `${date.toLocaleString("id-ID", {
+      month: "long",
+    })} ${year}`;
+
+    const days = ["Min", "Sen", "Sel", "Rab", "Kam", "Jum", "Sab"];
+    days.forEach((d) => {
+      const dayEl = document.createElement("div");
+      dayEl.className = "calendar-day";
+      dayEl.textContent = d;
+      calendarGrid.appendChild(dayEl);
+    });
+
+    const firstDay = new Date(year, month, 1).getDay();
+    const lastDate = new Date(year, month + 1, 0).getDate();
+
+    for (let i = 0; i < firstDay; i++) {
+      const emptyEl = document.createElement("div");
+      calendarGrid.appendChild(emptyEl);
+    }
+
+    for (let i = 1; i <= lastDate; i++) {
+      const dateEl = document.createElement("div");
+      dateEl.className = "calendar-date";
+      dateEl.textContent = i;
+
+      dateEl.addEventListener("click", (e) => {
+        e.stopPropagation();
+
+        const selected = new Date(year, month, i);
+
+        // Update fakeDateInput untuk display
+        fakeDateInput.value = selected.toLocaleDateString("id-ID", {
+          weekday: "long",
+          day: "2-digit",
+          month: "long",
+          year: "numeric",
+        });
+
+        // Update deadline2 dan hidden deadline
+        const isoDate = selected.toISOString().split("T")[0];
+        deadline2.value = isoDate;
+        hiddenDeadline.value = isoDate;
+
+        calendarPopup.style.display = "none";
+        overlayDate.style.display = "none";
+        mainContent.classList.remove("blur-bg");
+      });
+
+      calendarGrid.appendChild(dateEl);
+    }
+  }
+
+  if (prevMonth) {
+    prevMonth.addEventListener("click", (e) => {
+      e.stopPropagation();
+      currentDate.setMonth(currentDate.getMonth() - 1);
+      renderCalendar(currentDate);
+    });
+  }
+
+  if (nextMonth) {
+    nextMonth.addEventListener("click", (e) => {
+      e.stopPropagation();
+      currentDate.setMonth(currentDate.getMonth() + 1);
+      renderCalendar(currentDate);
+    });
+  }
+
+  if (fakeDateInput) {
+    fakeDateInput.addEventListener("click", (e) => {
+      e.stopPropagation();
+      renderCalendar(currentDate);
+      calendarPopup.style.display = "block";
+      overlayDate.style.display = "block";
+      mainContent.classList.add("blur-bg");
+    });
+  }
+
+  if (overlayDate) {
+    overlayDate.addEventListener("click", () => {
+      calendarPopup.style.display = "none";
+      overlayDate.style.display = "none";
+      mainContent.classList.remove("blur-bg");
+    });
+  }
+
+  if (calendarPopup) {
+    calendarPopup.addEventListener("click", (e) => e.stopPropagation());
+  }
 });
 
-async function handleFormSubmit(formId, submitBtnId) {
-  const form = document.getElementById(formId);
+// ✅ Update: Hanya pakai taskForm2
+async function handleFormSubmit() {
+  const form = document.getElementById("taskForm2");
   form.addEventListener("submit", async function (e) {
     e.preventDefault();
 
-    const submitBtn = document.getElementById(submitBtnId);
+    const submitBtn = document.getElementById("submitBtn2");
 
-    // Ambil semua value
-    const taskName = form.querySelector('input[id^="taskName"]').value.trim();
-    const taskDetail = form
-      .querySelector('input[id^="taskDetail"]')
-      .value.trim();
-    const taskSubject = form
-      .querySelector('input[id^="subjectFake"]')
-      .value.trim();
-    const taskDeadline = form.querySelector('input[type="date"]').value;
-    const taskType = form.querySelector('input[type="radio"]:checked')?.value;
+    const taskName = document.getElementById("taskName2").value.trim();
+    const taskDetail = document.getElementById("taskDetail2").value.trim();
+    const taskSubject = document.getElementById("subjectFake").value.trim();
+    const taskDeadline = document.getElementById("deadline").value || "";
+    const taskType = document.querySelector(
+      'input[name="taskType2"]:checked'
+    )?.value;
 
     if (
       !taskName ||
@@ -165,7 +274,7 @@ async function handleFormSubmit(formId, submitBtnId) {
         createdAt: serverTimestamp(),
       };
 
-      if (editingTaskId && formId === "taskForm") {
+      if (editingTaskId) {
         await updateDoc(doc(db, "tasks", editingTaskId), task);
         editingTaskId = null;
       } else {
@@ -197,8 +306,7 @@ async function handleFormSubmit(formId, submitBtnId) {
   });
 }
 
-handleFormSubmit("taskForm", "submitBtn");
-handleFormSubmit("taskForm2", "submitBtn2");
+handleFormSubmit();
 
 function renderTasks() {
   const container = document.getElementById("taskContainer");
@@ -206,11 +314,11 @@ function renderTasks() {
 
   if (tasks.length === 0) {
     container.innerHTML = `
-                    <div class="empty-state">
-                        <h3>Belum adaa tugass nii sayaang</h3>
-                        <p>Yeeayy! Kamuu bebass duluu sayaaang</p>
-                    </div>
-                `;
+      <div class="empty-state">
+        <h3>Belum adaa tugass nii sayaang</h3>
+        <p>Yeeayy! Kamuu bebass duluu sayaaang</p>
+      </div>
+    `;
     return;
   }
 
@@ -218,24 +326,23 @@ function renderTasks() {
     const taskCard = document.createElement("div");
     taskCard.className = "task-card";
     taskCard.innerHTML = `
-  <div class="task-matpel task-info">${task.subject}</div>
-  <div class="task-deadline task-info">${task.deadline}</div>
-  <div class="task-name task-info">${task.name}</div>
-  <div class="task-type task-info">${task.type}</div>
-  <div class="task-detail task-info">${task.detail}</div>
-  <div class="task-actions">
-    <button class="action-btn btn-complete" onclick="completeTask('${task.id}')">
-      <i class="fa-solid fa-check"></i>
-    </button>
-    <button class="action-btn btn-edit" onclick="editTask('${task.id}')">
-      <i class="fa-solid fa-pen"></i>
-    </button>
-    <button class="action-btn btn-delete" onclick="deleteTask('${task.id}')">
-      <i class="fa-solid fa-xmark"></i>
-    </button>
-  </div>
-`;
-
+      <div class="task-matpel task-info">${task.subject}</div>
+      <div class="task-deadline task-info">${task.deadline}</div>
+      <div class="task-name task-info">${task.name}</div>
+      <div class="task-type task-info">${task.type}</div>
+      <div class="task-detail task-info">${task.detail}</div>
+      <div class="task-actions">
+        <button class="action-btn btn-complete" onclick="completeTask('${task.id}')">
+          <i class="fa-solid fa-check"></i>
+        </button>
+        <button class="action-btn btn-edit" onclick="editTask('${task.id}')">
+          <i class="fa-solid fa-pen"></i>
+        </button>
+        <button class="action-btn btn-delete" onclick="deleteTask('${task.id}')">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+    `;
     container.appendChild(taskCard);
   });
 }
@@ -292,21 +399,41 @@ window.deleteTask = async function (id) {
   }
 };
 
+// ✅ Update: Edit pakai ID dengan angka 2
 window.editTask = function (id) {
   const task = tasks.find((t) => t.id === id);
   if (!task) return;
 
   editingTaskId = id;
 
-  document.getElementById("taskName").value = task.name;
-  document.getElementById("taskDetail").value = task.detail;
+  // Populate form dengan data task
+  document.getElementById("taskName2").value = task.name;
+  document.getElementById("taskDetail2").value = task.detail;
+  document.getElementById("subjectFake").value = task.subject;
   document.getElementById("subject").value = task.subject;
+
+  // Set deadline
+  document.getElementById("deadline2").value = task.deadline;
   document.getElementById("deadline").value = task.deadline;
+
+  // Format tanggal untuk display
+  const date = new Date(task.deadline);
+  document.getElementById("fakeDateInput").value = date.toLocaleDateString(
+    "id-ID",
+    {
+      weekday: "long",
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
+    }
+  );
+
+  // Set radio button
   document.querySelector(
-    `input[name="taskType"][value="${task.type}"]`
+    `input[name="taskType2"][value="${task.type}"]`
   ).checked = true;
 
-  showScreen("addTaskEmpty");
+  showScreen("addTaskHas");
 };
 
 startApp();

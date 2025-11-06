@@ -131,8 +131,19 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.26.3/dist/sweetalert2.min.css
                 </div>
 
                 <div class="form-group">
-                  <label>Masukan Deadline</label>
-                  <input type="date" id="deadline2" />
+                  <label>Masukkan Deadline</label>
+                  <input
+                    type="text"
+                    id="fakeDateInput"
+                    placeholder="Klik untuk pilih tanggal"
+                    readonly
+                    required
+                  />
+                  <input type="date" id="deadline2" style="display: none" />
+                </div>
+
+                <div id="mainContent">
+                  <input type="hidden" id="deadline" name="deadline" />
                 </div>
 
                 <div class="form-group">
@@ -200,6 +211,17 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.26.3/dist/sweetalert2.min.css
         </div>
       </div>
     </div>
+
+    <div id="overlayDate" class="overlay"></div>
+    <div class="calendar-popup" id="calendarPopup">
+      <div class="calendar-header">
+        <button id="prevMonth"><i class="fa-solid fa-backward"></i></button>
+        <span id="monthYear"></span>
+        <button id="nextMonth"><i class="fa-solid fa-forward"></i></button>
+      </div>
+      <div class="calendar-grid" id="calendarGrid"></div>
+    </div>
+
     <div class="dropdown-popup" id="dropdownPopup">
       <ul id="dropdownOptions">
         <li data-value="Administrasi Umum">Administrasi Umum</li>
