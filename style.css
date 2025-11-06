@@ -319,6 +319,11 @@ body {
   font-family: "Poppins", sans-serif;
 }
 
+.calendar-date.disabled {
+  color: #ccc;
+  cursor: not-allowed;
+}
+
 .calendar-header {
   display: flex;
   justify-content: space-between;

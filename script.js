@@ -164,33 +164,44 @@ document.addEventListener("DOMContentLoaded", () => {
       calendarGrid.appendChild(emptyEl);
     }
 
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
     for (let i = 1; i <= lastDate; i++) {
       const dateEl = document.createElement("div");
       dateEl.className = "calendar-date";
       dateEl.textContent = i;
 
-      dateEl.addEventListener("click", (e) => {
-        e.stopPropagation();
+      const currentDate = new Date(year, month, i);
+      currentDate.setHours(0, 0, 0, 0);
 
-        const selected = new Date(year, month, i);
+      // Jika tanggal sudah lewat, disable
+      if (currentDate < today) {
+        dateEl.classList.add("disabled");
+      } else {
+        dateEl.addEventListener("click", (e) => {
+          e.stopPropagation();
 
-        // Update fakeDateInput untuk display
-        fakeDateInput.value = selected.toLocaleDateString("id-ID", {
-          weekday: "long",
-          day: "2-digit",
-          month: "long",
-          year: "numeric",
+          const selected = new Date(year, month, i);
+
+          // Update fakeDateInput untuk display
+          fakeDateInput.value = selected.toLocaleDateString("id-ID", {
+            weekday: "long",
+            day: "2-digit",
+            month: "short",
+            year: "numeric",
+          });
+
+          // Update deadline2 dan hidden deadline
+          const isoDate = selected.toISOString().split("T")[0];
+          deadline2.value = isoDate;
+          hiddenDeadline.value = isoDate;
+
+          calendarPopup.style.display = "none";
+          overlayDate.style.display = "none";
+          mainContent.classList.remove("blur-bg");
         });
-
-        // Update deadline2 dan hidden deadline
-        const localISO = formatDateToLocalISO(selected);
-        deadline2.value = localISO;
-        hiddenDeadline.value = localISO;
-
-        calendarPopup.style.display = "none";
-        overlayDate.style.display = "none";
-        mainContent.classList.remove("blur-bg");
-      });
+      }
 
       calendarGrid.appendChild(dateEl);
     }
