@@ -119,8 +119,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // ===== Popup Kalender =====
-  // ✅ Update: Pakai fakeDateInput dan deadline2
   const fakeDateInput = document.getElementById("fakeDateInput");
   const deadline2 = document.getElementById("deadline2");
   const hiddenDeadline = document.getElementById("deadline");
@@ -230,7 +228,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-// ✅ Update: Hanya pakai taskForm2
 async function handleFormSubmit() {
   const form = document.getElementById("taskForm2");
   form.addEventListener("submit", async function (e) {
@@ -308,6 +305,18 @@ async function handleFormSubmit() {
 
 handleFormSubmit();
 
+function formatDateDisplay(isoDate) {
+  if (!isoDate) return "";
+
+  const date = new Date(isoDate);
+  const dayName = date.toLocaleDateString("id-ID", { weekday: "short" });
+  const day = date.getDate();
+  const monthName = date.toLocaleDateString("id-ID", { month: "long" });
+  const year = date.getFullYear();
+
+  return `${dayName}, ${day} ${monthName} ${year}`;
+}
+
 function renderTasks() {
   const container = document.getElementById("taskContainer");
   container.innerHTML = "";
@@ -316,7 +325,7 @@ function renderTasks() {
     container.innerHTML = `
       <div class="empty-state">
         <h3>Belum adaa tugass nii sayaang</h3>
-        <p>Yeeayy! Kamuu bebass duluu sayaaang</p>
+        <p>Yeeayy! Kamuu bebass duluu sayaaang</p>  
       </div>
     `;
     return;
@@ -327,18 +336,25 @@ function renderTasks() {
     taskCard.className = "task-card";
     taskCard.innerHTML = `
       <div class="task-matpel task-info">${task.subject}</div>
-      <div class="task-deadline task-info">${task.deadline}</div>
+      <div class="task-deadline task-info">${formatDateDisplay(
+        task.deadline
+      )}</div>
+
       <div class="task-name task-info">${task.name}</div>
       <div class="task-type task-info">${task.type}</div>
       <div class="task-detail task-info">${task.detail}</div>
       <div class="task-actions">
-        <button class="action-btn btn-complete" onclick="completeTask('${task.id}')">
+        <button class="action-btn btn-complete" onclick="completeTask('${
+          task.id
+        }')">
           <i class="fa-solid fa-check"></i>
         </button>
         <button class="action-btn btn-edit" onclick="editTask('${task.id}')">
           <i class="fa-solid fa-pen"></i>
         </button>
-        <button class="action-btn btn-delete" onclick="deleteTask('${task.id}')">
+        <button class="action-btn btn-delete" onclick="deleteTask('${
+          task.id
+        }')">
           <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
@@ -399,36 +415,25 @@ window.deleteTask = async function (id) {
   }
 };
 
-// ✅ Update: Edit pakai ID dengan angka 2
 window.editTask = function (id) {
   const task = tasks.find((t) => t.id === id);
   if (!task) return;
 
   editingTaskId = id;
 
-  // Populate form dengan data task
   document.getElementById("taskName2").value = task.name;
   document.getElementById("taskDetail2").value = task.detail;
   document.getElementById("subjectFake").value = task.subject;
   document.getElementById("subject").value = task.subject;
 
-  // Set deadline
   document.getElementById("deadline2").value = task.deadline;
   document.getElementById("deadline").value = task.deadline;
 
-  // Format tanggal untuk display
   const date = new Date(task.deadline);
-  document.getElementById("fakeDateInput").value = date.toLocaleDateString(
-    "id-ID",
-    {
-      weekday: "long",
-      day: "2-digit",
-      month: "long",
-      year: "numeric",
-    }
+  document.getElementById("fakeDateInput").value = formatDateDisplay(
+    task.deadline
   );
 
-  // Set radio button
   document.querySelector(
     `input[name="taskType2"][value="${task.type}"]`
   ).checked = true;
